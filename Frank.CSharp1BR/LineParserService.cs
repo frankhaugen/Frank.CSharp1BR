@@ -14,18 +14,11 @@ public class LineParserService : BackgroundService
         _weatherDataChannel = weatherDataChannel;
     }
     
-    private static ulong _lineCount;
-
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         await foreach (var line in _channel.Reader.ReadAllAsync(stoppingToken))
         {
-            _lineCount++;
-            if (_lineCount % 1_000_000 == 0)
-            {
-                Console.WriteLine($"LineParserService: {_lineCount}");
-            }
             await _weatherDataChannel.Writer.WriteAsync(ParseLine(line), stoppingToken);
         }
     }
