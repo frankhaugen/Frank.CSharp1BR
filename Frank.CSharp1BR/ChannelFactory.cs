@@ -13,6 +13,10 @@ public class ChannelFactory
     public Channel<T> CreateChannel<T>() where T : class => _cache.GetOrCreate<Channel<T>>(typeof(T).Name,x =>
     {
         x.SlidingExpiration = TimeSpan.FromMinutes(60);
-        return Channel.CreateUnbounded<T>();
+        return Channel.CreateUnbounded<T>(new UnboundedChannelOptions()
+        {
+            SingleReader = true,
+            SingleWriter = false
+        });
     }) ?? throw new InvalidOperationException("Channel not found");
 }

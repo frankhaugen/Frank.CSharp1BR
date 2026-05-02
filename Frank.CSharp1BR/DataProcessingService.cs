@@ -8,12 +8,12 @@ using Microsoft.Extensions.Options;
 public class DataProcessingService : BackgroundService
 {
     private readonly IOptions<Settings> _settings;
-    private readonly Channel<string> _channel;
+    private readonly ChannelWriter<string> _writer;
     
     public DataProcessingService(IOptions<Settings> settings, Channel<string> channel)
     {
         _settings = settings;
-        _channel = channel;
+        _writer = channel.Writer;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -21,7 +21,7 @@ public class DataProcessingService : BackgroundService
     {
         Console.WriteLine("Starting DataProcessingService");
         var stopWatch = Stopwatch.StartNew();
-        await ReadFileAsync(_settings.Value.FilePath, _channel.Writer, stoppingToken);
+        await ReadFileAsync(_settings.Value.FilePath, _writer, stoppingToken);
         stopWatch.Stop();
         Console.WriteLine($"DataProcessingService completed in {stopWatch.Elapsed}");
     }
