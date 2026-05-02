@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Frank.CSharp1BR.DataGenerator/Frank.CSharp1BR.DataGenerator.csproj" />
+  <Project Path="Frank.CSharp1BR/Frank.CSharp1BR.csproj" />
+</Solution>
